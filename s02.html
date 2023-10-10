@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>S02</title>
+  </head>
+  <body>
+    <style>
+      * {
+        font-family: sans-serif;
+        font-size: 23px;
+      }
+      table,
+      td {
+        border: 1px solid #333;
+        padding: 2px;
+      }
+
+      td {
+        border: 1px solid #333;
+        padding: 10px;
+        text-align: center;
+      }
+
+      th {
+        padding: 10px;
+      }
+
+      thead {
+        background-color: #333;
+        color: #fff;
+      }
+    </style>
+
+    <h1>Table Users</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>userId</th>
+          <th>Name</th>
+          <th>Family</th>
+          <th>Age</th>
+        </tr>
+      </thead>
+      <tbody id="table-row">
+        <!-- render by JS -->
+      </tbody>
+    </table>
+
+    <script>
+      /*
+            Sajad Mehri | S02
+            Montazeri Technical College of Mashhad
+       */
+
+      let users = [];
+      let state = confirm(
+        "Welcome to the user registration system. OK = continue | Cancel = Exit"
+      );
+      for (let i = 0; state; i++) {
+        let f_name = prompt(`Enter First Name User ${i}: `);
+        let l_name = prompt(`Enter Last Name User ${i}: `);
+        let age = prompt(`Enter Age User ${i}: `);
+        users[i] = {
+          userId: i,
+          firstName: f_name,
+          lastName: l_name,
+          age: age,
+        };
+        state = confirm("Do you want to add a user?");
+      }
+      console.log(users);
+      let table_row = document.getElementById("table-row");
+      let tr_temp = "";
+      users.reverse().forEach((user, index) => {
+        tr_temp = `
+              <tr>
+                <td>${user.userId}</td>
+                <td>${user.firstName}</td>
+                <td>${user.lastName}</td>
+                <td>${user.age}</td>
+              </tr>
+              `;
+        table_row.innerHTML += tr_temp;
+      });
+    </script>
+  </body>
+</html>
