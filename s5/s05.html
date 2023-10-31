@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>S02</title>
+</head>
+
+<body>
+    <style>
+        * {
+            font-family: sans-serif;
+            font-size: 23px;
+        }
+
+        .field {
+            display: flex;
+            align-items: center;
+            margin: 10px;
+
+        }
+
+        .field input {
+            width: 100px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .field button {
+
+            font-size: 14px;
+        }
+    </style>
+
+
+    <section>
+        <button id="add-user">+</button>
+        <div id="user-list">
+
+        </div>
+        <button id="cancel-btn">Cancel</button>
+    </section>
+
+
+    <script>
+        /*
+              Sajad Mehri | S02
+              Montazeri Technical College of Mashhad
+         */
+
+        let userList = document.getElementById("user-list");
+        let addUserBtn = document.getElementById("add-user");
+        let users = [];
+
+        function userAdd() {
+            
+            userTemp = `
+    <div class="field">
+        <input type="text" placeholder="firstName" id="f-name">
+        <input type="text" placeholder="lastName" id="l-name">
+        <button onclick="userAddToArr()" id="btn">ADD</button>
+    </div>
+`
+                userList.innerHTML += userTemp;
+        }
+
+        function userAddToArr(){
+            let fname = document.getElementById("f-name");
+            let lname = document.getElementById("l-name");
+            let user = {
+                fname:fname.value,
+                lname:lname.value,
+            }
+
+            users.push(user);
+
+            console.log(users);
+        }
+
+        addUserBtn.addEventListener("click",userAdd)
+
+
+
+
+        // for (let i = 0; state; i++) {
+        //     let f_name = prompt(`Enter First Name User ${i}: `);
+        //     let l_name = prompt(`Enter Last Name User ${i}: `);
+        //     let age = prompt(`Enter Age User ${i}: `);
+        //     users[i] = {
+        //         userId: i,
+        //         firstName: f_name,
+        //         lastName: l_name,
+        //         age: age,
+        //     };
+        //     state = confirm("Do you want to add a user?");
+        // }
+        // console.log(users);
+
+    </script>
+</body>
+
+</html>
