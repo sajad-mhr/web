@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>S02</title>
+  </head>
+
+  <body>
+    <style>
+      * {
+        font-family: sans-serif;
+        font-size: 23px;
+      }
+
+      .section-action{
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+      }
+
+      .field {
+        display: flex;
+        align-items: center;
+        margin: 10px;
+        box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 1rem;
+      }
+
+      .field input {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        margin-right: 10px;
+        
+      }
+
+      .field button {
+        font-size: 14px;
+        padding: 10px;
+        width: 30%;
+        border: none;
+        background-color: royalblue;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      #cancel-btn {
+        display: none;
+        background-color: rgb(194, 12, 12);
+        color: #fff;
+        border: none;
+        border-radius: 7px;
+        padding: 10px 0 10px 0;
+        align-items: center;
+        justify-content: center;
+        width:20%;
+        cursor: pointer;
+        margin-top: 14px;
+      }
+
+      #add-user {
+        background-color: royalblue;
+        color: #fff;
+        border: none;
+        border-radius: 7px;
+        font-size: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        cursor: pointer;
+      }
+
+      .teble-section {
+        margin-top: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td,
+      th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+    </style>
+
+    <section class="section-action">
+      <button id="add-user">+</button>
+      <div id="user-input"></div>
+      <button id="cancel-btn">Cancel</button>
+    </section>
+    <section class="teble-section">
+      <table>
+        <thead>
+          <tr>
+            <th>UserID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+          </tr>
+        </thead>
+        <tbody id="tbl-body">
+          <!-- <tr>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Germany</td>
+          </tr> -->
+        </tbody>
+      </table>
+    </section>
+
+    <script>
+      /*
+              Sajad Mehri | S05
+              Montazeri Technical College of Mashhad
+         */
+
+      let userInput = document.getElementById("user-input");
+      let addUserBtn = document.getElementById("add-user");
+      let cancelBtn = document.getElementById("cancel-btn");
+      let tblBody = document.getElementById("tbl-body");
+      let users = [];
+
+      function ShowInputs() {
+        let divElem = document.createElement("div");
+        let inputFirstNameElem = document.createElement("input");
+        let inputLastNameElem = document.createElement("input");
+        let btnElem = document.createElement("button");
+        divElem.classList = "field";
+        inputFirstNameElem.id = "f-name";
+        inputFirstNameElem.type = "text";
+        inputFirstNameElem.placeholder = "FirstName";
+        inputLastNameElem.id = "l-name";
+        inputLastNameElem.type = "text";
+        inputLastNameElem.placeholder = "LastName";
+        btnElem.innerHTML = "ADD";
+        btnElem.addEventListener("click", userAddToArr);
+        divElem.appendChild(inputFirstNameElem);
+        divElem.appendChild(inputLastNameElem);
+        divElem.appendChild(btnElem);
+        userInput.appendChild(divElem);
+      }
+
+      function userAdd() {
+        ShowInputs();
+        addUserBtn.style.display = "none";
+        cancelBtn.style.display = "flex";
+      }
+
+      cancelBtn.addEventListener("click", () => {
+        addUserBtn.style.display = "flex";
+        cancelBtn.style.display = "none";
+        userInput.innerHTML = "";
+      });
+
+      function GenerateID(length) {
+        let result = "";
+        const characters =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        const charactersLength = characters.length;
+        let counter = 0;
+        while (counter < length) {
+          result += characters.charAt(
+            Math.floor(Math.random() * charactersLength)
+          );
+          counter += 1;
+        }
+        return result;
+      }
+
+      function userAddToArr() {
+        let l_name = document.getElementById("f-name");
+        let f_name = document.getElementById("l-name");
+        let user = {
+          id: GenerateID(10),
+          fname: l_name.value,
+          lname: f_name.value,
+        };
+        users.push(user);
+        console.log(users);
+        ShowUser(users);
+        l_name.value = "";
+        f_name.value = "";
+      }
+
+      function ShowUser(data) {
+        let trTemp = ``;
+        data.forEach((user) => {
+          trTemp = `
+        <tr>
+            <td>${user.id}</td>
+            <td>${user.fname}</td>
+            <td>${user.lname}</td>
+        </tr>
+            `;
+        });
+
+        tblBody.innerHTML += trTemp;
+      }
+
+      addUserBtn.addEventListener("click", userAdd);
+    </script>
+  </body>
+</html>
