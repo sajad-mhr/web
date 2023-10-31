@@ -54,23 +54,42 @@
         let users = [];
 
         function userAdd() {
-            
-            userTemp = `
-    <div class="field">
-        <input type="text" placeholder="firstName" id="f-name">
-        <input type="text" placeholder="lastName" id="l-name">
-        <button onclick="userAddToArr()" id="btn">ADD</button>
-    </div>
-`
-                userList.innerHTML += userTemp;
+
+            let divElem = document.createElement("div");
+            divElem.classList = "field"
+            let inputElemFname = document.createElement("input");
+            let inputElemlname = document.createElement("input");
+            inputElemFname.type = "text"
+            inputElemFname.placeholder = "Firstname"
+            inputElemlname.type = "text"
+            inputElemlname.placeholder = "Firstname"
+            let btnElem = document.createElement("button");
+            btnElem.innerHTML = "ADD"
+            divElem.appendChild(inputElemFname);
+            divElem.appendChild(inputElemlname);
+            divElem.appendChild(btnElem);
+
+            //             userTemp = `
+            //     <div class="field">
+            //         <input type="text" placeholder="firstName" id="f-name">
+            //         <input type="text" placeholder="lastName" id="l-name">
+            //         <button onclick="userAddToArr()" id="btn">ADD</button>
+            //     </div>
+            // `
+            //                 userList.innerHTML += userTemp;
+
+            userList.append(divElem);
+
+            console.log(document);
+
         }
 
-        function userAddToArr(){
+        function userAddToArr() {
             let fname = document.getElementById("f-name");
             let lname = document.getElementById("l-name");
             let user = {
-                fname:fname.value,
-                lname:lname.value,
+                fname: fname.value,
+                lname: lname.value,
             }
 
             users.push(user);
@@ -78,7 +97,7 @@
             console.log(users);
         }
 
-        addUserBtn.addEventListener("click",userAdd)
+        addUserBtn.addEventListener("click", userAdd)
 
 
 
