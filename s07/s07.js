@@ -1,17 +1,18 @@
-let http = require('http');
-let fs = require('fs');
+const http = require("http");
+const fs = require("fs");
 const PORT = 8080;
 http.createServer(reqHandler).listen(PORT);
 console.log(`Server On in Port ${PORT}`);
+
 let funcs = {
-    home: homePageController,
-    about: aboutPageController,
-}
-let headers = {
-    text: { 'Content-Type': 'text/plain' },
-    html: { 'Content-Type': 'text/Html' }
+  home: homePageController,
+  about: aboutPageController,
 };
 
+let headers = {
+  text: { "Content-Type": "text/plain" },
+  html: { "Content-Type": "text/html" },
+};
 
 // let styles = `
 // <style>
@@ -69,29 +70,36 @@ let headers = {
 //     res.write(template);
 // }
 
-
 function homePageController(res) {
-    fs.readFile('./pages/home.html', (error, data) => {
-        res.writeHead(200, headers.html);
-        res.write(data);
-        console.log(error);
-    })
-
+  fs.readFile("./pages/home.html", (error, data) => {
+    if (error) {
+      res.writeHead(404);
+      res.write("not found");
+    } else {
+      res.writeHead(200, headers.html);
+      res.write(data);
+      res.end();
+    }
+  });
 }
 
 function aboutPageController(res) {
-    fs.readFile('./pages/about.html', (error, data) => {
-        res.writeHead(200, headers.html);
-        res.write(data);
-        console.log(error);
-    })
+  fs.readFile("./pages/about.html", (error, data) => {
+    if (error) {
+      res.writeHead(404);
+      res.write("not found");
+    } else {
+      res.writeHead(200, headers.html);
+      res.write(data);
+      res.end();
+    }
+  });
 }
 
-
 function reqHandler(req, res) {
-    let path = req.url.split("/")[1]
-    if (path !== "favicon.ico") {
-        funcs[path](res);
-    }
-    res.end();
+  let path = req.url.split("/")[1];
+  if (path !== "favicon.ico") {
+    console.log(path);
+    funcs[path](res);
+  }
 }
