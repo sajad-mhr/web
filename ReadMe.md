@@ -1,5 +1,5 @@
 # Hi 👋
-###### Here are exercises from the website design course that teaches nodejs 😀
+##### Here are exercises from the website design course that teaches nodejs 😀
 
 -----------
 ### how to create server in nodeJS 💫
