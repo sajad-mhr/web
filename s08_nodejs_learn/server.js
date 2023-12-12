@@ -12,6 +12,8 @@ const routes = {
   page: pageHandler,
   404: pageNotFound,
   writeFile: writeFile,
+  writeJson: writejson,
+  getFile: getJson
 };
 function write(res, statusCode, headerType, body) {
   res.writeHead(statusCode, headers[headerType]);
@@ -43,6 +45,36 @@ function writeFile(req, res, data) {
     }
   })
   console.log(`chunk data ==> ${data}`);
+}
+
+function writejson(req, res, data) {
+  fs.readFile('data.txt', (error, filedata) => {
+    if (error) {
+      write(res, 404, "text", "file not found");
+    } else {
+      filedata = JSON.parse(filedata);
+      filedata.data.push(JSON.parse(data));
+      filedata = JSON.stringify(filedata);
+      fs.writeFile('data.txt', filedata, 'utf8', (error) => {
+        if (error) {
+          write(res, 404, "text", "fs error");
+        } else {
+          write(res, 200, "text", "Save Data Successfully");
+        }
+      })
+    }
+  })
+}
+
+
+function getJson(req, res) {
+  fs.readFile("data.txt", (err, data) => {
+    if (err) {
+      write(res, 404, "text", "file not found");
+    } else {
+      write(res, 200, "html", data);
+    }
+  })
 }
 
 function requestHandler(req, res) {

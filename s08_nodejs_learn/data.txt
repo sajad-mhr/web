@@ -1,5 +1,1 @@
-{
-    "username":"sajadmhr",
-    "email":"sajad@g.co",
-    "password":"12345"
-}
+{"data":[{"username":"danial","email":"danial@g.co","password":"12345"},{"username":"sajad","email":"sajad@g.co","password":"12345"},{"username":"awdawawd","email":"sajad@g.co","password":"12345"}]}
