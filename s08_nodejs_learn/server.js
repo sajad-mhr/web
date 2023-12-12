@@ -35,7 +35,13 @@ function pageNotFound(req, res) {
 }
 
 function writeFile(req, res, data) {
-  write(res, 200, "text", "Send Data Successfully");
+  fs.writeFile('data.txt', data, 'utf-8', (error) => {
+    if (error) {
+      write(res, 201, "text", "not create file");
+    } else {
+      write(res, 200, "text", "Create File Successfully");
+    }
+  })
   console.log(`chunk data ==> ${data}`);
 }
 
@@ -48,7 +54,6 @@ function requestHandler(req, res) {
       data += chunk
     })
     req.on("end", () => {
-      console.log(data);
       try {
         routes[route](req, res, data);
       } catch (err) {
