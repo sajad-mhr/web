@@ -11,6 +11,7 @@ let headers = {
 const routes = {
   page: pageHandler,
   404: pageNotFound,
+  writeFile: writeFile,
 };
 function write(res, statusCode, headerType, body) {
   res.writeHead(statusCode, headers[headerType]);
@@ -32,13 +33,29 @@ function pageNotFound(req, res) {
     write(res, 404, "html", data);
   });
 }
+
+function writeFile(req, res, data) {
+  write(res, 200, "text", "Send Data Successfully");
+  console.log(`chunk data ==> ${data}`);
+}
+
 function requestHandler(req, res) {
   let route = req.url.split("/")[1];
   if (route !== "favicon.ico") {
-    try {
-      routes[route](req, res);
-    } catch (err) {
-      routes["404"](req, res);
-    }
+
+    let data = ""
+    req.on('data', (chunk) => {
+      data += chunk
+    })
+    req.on("end", () => {
+      console.log(data);
+      try {
+        routes[route](req, res, data);
+      } catch (err) {
+        routes["404"](req, res);
+      }
+    })
+
+
   }
 }
