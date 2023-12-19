@@ -1,10 +1,6 @@
 const http = require("http");
 const fs = require("fs");
-const axios = require("axios")
-const add_user = require("./modules/User")
-const get_user = require("./modules/User")
-const PORT = 8080;
-console.log(add_user);
+const PORT = 8081;
 const server = http.createServer(requestHandler);
 server.listen(PORT);
 console.log(`server listen in Port ${PORT}`);
@@ -16,7 +12,6 @@ let headers = {
 };
 
 const routes = {
-    users: usersRequest,
     x:funcx
 };
 
@@ -26,27 +21,8 @@ function write(res, statusCode, headerType, body) {
     res.end();
 }
 
-function funcx(request, response) {
-    axios.post("http://127.0.0.1:8081/x")
-    .then(res=>{
-        console.log(res.data);
-    })
-    .catch(err=>console.log(err))
-}
-
-
-function usersRequest(req, res, data) {
-    console.log(req.method);
-    switch (req.method) {
-        case "GET":
-            get_user.getUser(req, res);
-            break;
-        case "POST":
-            add_user.addUser(req, res, data);
-            break;
-        default:
-            break;
-    }
+function funcx(request, response,data) {
+    write(response,200,"text",JSON.stringify(data));
 }
 
 function requestHandler(req, res) {
