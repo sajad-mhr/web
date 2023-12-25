@@ -22,6 +22,7 @@ function write(res, statusCode, headerType, body) {
 }
 
 function funcx(request, response,data) {
+    console.log(`Data : ${data}`);
     write(response,200,"text",JSON.stringify(data));
 }
 

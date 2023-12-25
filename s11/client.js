@@ -1,7 +1,10 @@
 const axios = require("axios")
-axios.post("http://127.0.0.1:8080/x",{
+
+let userObj = {
     id:1,
-    name:"sajad"
-})
-.then(res=>console.log(res))
+    email:"sajad@g.co",
+    phoneNumber:"09304419522"
+}
+axios.post("http://127.0.0.1:8080/x",userObj)
+.then(res=>console.log(res.data))
 .catch(err=>console.log(err))

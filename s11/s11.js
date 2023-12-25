@@ -26,12 +26,8 @@ function write(res, statusCode, headerType, body) {
     res.end();
 }
 
-function funcx(request, response) {
-    axios.post("http://127.0.0.1:8081/x")
-    .then(res=>{
-        console.log(res.data);
-    })
-    .catch(err=>console.log(err))
+async function funcx(request, response,data) {
+    await axios.post("http://127.0.0.1:8081/x",data)
 }
 
 
