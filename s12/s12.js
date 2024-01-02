@@ -117,7 +117,7 @@ function loginController(req, res, data) {
           }
         })
         if (status === false) {
-          write(res, 200, "text", "user not found");
+          write(res, 200, "text", "user not found!");
         }
       }
     });
