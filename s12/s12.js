@@ -2,6 +2,7 @@ const http = require("http");
 const fs = require("fs");
 const PORT = 8080;
 const server = http.createServer(requestHandler);
+const jwt = require("jsonwebtoken")
 server.listen(PORT);
 console.log(`server listen in Port ${PORT}`);
 
@@ -13,7 +14,8 @@ let headers = {
 
 const routes = {
   users: usersRequest,
-  register: registerController
+  register: registerController,
+  login: loginController
 };
 
 function write(res, statusCode, headerType, body) {
@@ -65,23 +67,62 @@ function usersRequest(req, res, data) {
   }
 }
 
-function registerController(req,res,data) {
-  fs.readFile("data.json", (error, filedata) => {
-    if (error) {
-      write(res, 404, "text", "file not found");
-    } else {
-      filedata = JSON.parse(filedata);
-      filedata.data.push(JSON.parse(data));
-      filedata = JSON.stringify(filedata);
-      fs.writeFile("data.json", filedata, "utf8", (error) => {
-        if (error) {
-          write(res, 404, "text", "fs error");
-        } else {
-          write(res, 200, "text", "Save Data Successfully");
+function registerController(req, res, data) {
+  let fObj = JSON.parse(data)
+  if (fObj.fullname === undefined
+    || fObj.email === undefined
+    || fObj.password === undefined
+  ) {
+    write(res, 404, "text", "bad Data");
+  } else {
+    fs.readFile("data.json", (error, filedata) => {
+      if (error) {
+        write(res, 404, "text", "file not found");
+      } else {
+        filedata = JSON.parse(filedata);
+        filedata.data.push(JSON.parse(data));
+        filedata = JSON.stringify(filedata);
+        fs.writeFile("data.json", filedata, "utf8", (error) => {
+          if (error) {
+            write(res, 404, "text", "fs error");
+          } else {
+            write(res, 200, "text", "register successfully");
+          }
+        });
+      }
+    });
+  }
+}
+
+function loginController(req, res, data) {
+  data = JSON.parse(data);
+  console.log(data);
+  if (data.email === undefined
+    || data.password === undefined
+  ) {
+    write(res, 404, "text", "bad Data");
+  } else {
+    fs.readFile("data.json", "utf-8", (error, filedata) => {
+      if (error) {
+        write(res, 404, "text", "file not found");
+      } else {
+        filedata = JSON.parse(filedata);
+        console.log(filedata.data);
+        let status = false;
+        filedata.data.forEach(user => {
+          if (user.email === data.email && user.password === data.password) {
+            const token = jwt.sign({ user }, 'shhhhh')
+            write(res, 200, "text", `token: ${token}`);
+            status = true
+          }
+        })
+        if (status === false) {
+          write(res, 200, "text", "user not found");
         }
-      });
-    }
-  });
+      }
+    });
+  }
+
 }
 
 function requestHandler(req, res) {
