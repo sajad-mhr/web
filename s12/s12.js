@@ -12,16 +12,32 @@ let headers = {
   json: { "Content-Type": "application/json" },
 };
 
+let types = {
+  text: "Text/Plain",
+  html: "Text/Html",
+  json: "application/json"
+};
+
 const routes = {
   users: usersRequest,
   register: registerController,
-  login: loginController
+  login: loginController,
+  verify: verifyToken
 };
 
-function write(res, statusCode, headerType, body) {
-  res.writeHead(statusCode, headers[headerType]);
-  res.write(body);
-  res.end();
+function write(res, statusCode, headerType, body, token) {
+  if (token) {
+    res.writeHead(statusCode, {
+      "Content-Type": types[headerType],
+      "Set-Cookie": token
+    });
+    res.write(body);
+    res.end();
+  } else {
+    res.writeHead(statusCode, headers[headerType]);
+    res.write(body);
+    res.end();
+  }
 }
 
 function writeJson(req, res, data) {
@@ -112,7 +128,7 @@ function loginController(req, res, data) {
         filedata.data.forEach(user => {
           if (user.email === data.email && user.password === data.password) {
             const token = jwt.sign({ user }, 'shhhhh')
-            write(res, 200, "text", `token: ${token}`);
+            write(res, 200, "text", "login success", token)
             status = true
           }
         })
@@ -122,6 +138,31 @@ function loginController(req, res, data) {
       }
     });
   }
+}
+
+function verifyToken(req, res) {
+  let token = req.headers.cookie;
+  let decodedToken = jwt.verify(token, 'shhhhh');
+  let findUser = decodedToken.user
+  fs.readFile("data.json", "utf-8", (error, filedata) => {
+    if (error) {
+      write(res, 404, "text", "file not found");
+    } else {
+      filedata = JSON.parse(filedata);
+      console.log(filedata.data);
+      let status = false;
+      filedata.data.forEach(user => {
+        if (user.email === findUser.email) {
+          write(res, 200, "text", "token verify successfully")
+          status = true
+        }
+      })
+      if (status === false) {
+        write(res, 200, "text", "user not found!");
+      }
+    }
+  });
+
 
 }
 
