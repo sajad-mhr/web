@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <div>
+            <label for="fullname">Fullname</label>
+            <input type="text" id="fullname">
+        </div>
+        <div>
+            <label for="email">email</label>
+            <input type="text" id="email">
+        </div>
+        <div>
+            <label for="password">password</label>
+            <input type="text" id="password">
+        </div>
+        <button onclick="register()">Register</button>
+        <br>
+        <span id="error"></span>
+    </div>
+
+    <script>
+        let fullname = document.getElementById("fullname")
+        let email = document.getElementById("email")
+        let password = document.getElementById("password")
+        let error = document.getElementById("error")
+
+
+        function register() {
+            let userObj = {
+                fullname: fullname.value,
+                email: email.value,
+                password: password.value,
+            }
+
+            let request = new XMLHttpRequest();
+            request.open("POST", "http://127.0.0.1:8080/register");
+            request.send(JSON.stringify(userObj));
+            request.onreadystatechange = () => {
+                switch (request.status) {
+                    case 200:
+                        error.innerHTML = request.responseText
+                        error.style.color = "green"
+                        break;
+                    case 404:
+                        error.innerHTML = request.responseText
+                        error.style.color = "red"
+                        break;
+                    default:
+                        error.innerHTML = request.responseText
+                        error.style.color = "yellow"
+                        break
+                }
+            }
+            console.log(userObj);
+        }
+
+
+    </script>
+</body>
+
+</html>
